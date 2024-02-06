@@ -1,33 +1,64 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
-// will compile your contracts, add the Hardhat Runtime Environment's members to the
-// global scope, and execute the script.
-const hre = require("hardhat");
+const path = require("path");
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
+  // This is just a convenience check
+  if (network.name === "hardhat") {
+    console.warn(
+      "You are trying to deploy a contract to the Hardhat Network, which" +
+        "gets automatically created and destroyed every time. Use the Hardhat" +
+        " option '--network localhost'"
+    );
+  }
 
-  const lockedAmount = hre.ethers.parseEther("0.001");
-
-  const lock = await hre.ethers.deployContract("Lock", [unlockTime], {
-    value: lockedAmount,
-  });
-
-  await lock.waitForDeployment();
-
+  // ethers is available in the global scope
+  const [deployer] = await ethers.getSigners();
   console.log(
-    `Lock with ${ethers.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.target}`
+    "Deploying the contracts with the account:",
+    await deployer.getAddress()
+  );
+
+  console.log("Account balance:", (await deployer.getBalance()).toString());
+
+  const Token = await ethers.getContractFactory("Token");
+  const token = await Token.deploy();
+  await token.deployed();
+
+  console.log("Token address:", token.address);
+
+  // We also save the contract's artifacts and address in the dapp directory
+  saveFrontendFiles(token);
+}
+
+function saveFrontendFiles(token) {
+  const fs = require("fs");
+  const contractsDir = path.join(
+    __dirname,
+    "..",
+    "hardhat-dapp",
+    "src",
+    "contracts"
+  );
+
+  if (!fs.existsSync(contractsDir)) {
+    fs.mkdirSync(contractsDir);
+  }
+
+  fs.writeFileSync(
+    path.join(contractsDir, "contract-address.json"),
+    JSON.stringify({ Token: token.address }, undefined, 2)
+  );
+
+  const TokenArtifact = artifacts.readArtifactSync("Token");
+
+  fs.writeFileSync(
+    path.join(contractsDir, "Token.json"),
+    JSON.stringify(TokenArtifact, null, 2)
   );
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
