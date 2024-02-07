@@ -1,4 +1,5 @@
 const ethers = require("ethers");
+const path = require("path");
 require("dotenv").config();
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
@@ -15,6 +16,14 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 
+// connection to react project
+app.use(express.static(path.join(__dirname, "hardhat-dapp/build")));
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "/hardhat-dapp/build/index.html"));
+});
+
+// RESTful API
 app.get("/products/:id", async (req, res) => {
   try {
     const id = req.params.id;
