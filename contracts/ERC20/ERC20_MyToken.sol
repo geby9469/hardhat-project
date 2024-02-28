@@ -8,11 +8,8 @@ contract ERC20MyToken is IERC20 {
 
     string public constant name = "BJK Token";
     string public constant symbol = "BJT";
-    uint8 public constant decimals = 18;
-
     mapping(address => uint256) balances;
     mapping(address => mapping (address => uint256)) allowed;
-
     uint256 totalSupply_;
 
     constructor(uint256 total) {
