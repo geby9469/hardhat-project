@@ -17,7 +17,7 @@
     "@types/mocha": ">=9.1.0",
     "@types/node": ">=18.0.0",
     "chai": "^4.2.0",
-    "ethers": "^6.4.0",
+    "ethers": "^6.13.1",
     "hardhat": "^2.22.6",
     "hardhat-gas-reporter": "^1.0.8",
     "solidity-coverage": "^0.8.0",
@@ -27,8 +27,10 @@
   },
   "dependencies": {
     "@account-abstraction/contracts": "^0.7.0",
+    "@account-abstraction/sdk": "^0.6.0",
     "@openzeppelin/contracts": "^5.0.2",
     "@openzeppelin/contracts-upgradeable": "^5.0.2",
-    "@openzeppelin/hardhat-upgrades": "^3.2.0"
+    "@openzeppelin/hardhat-upgrades": "^3.2.0",
+    "userop": "^0.4.0-beta.5"
   }
 }
