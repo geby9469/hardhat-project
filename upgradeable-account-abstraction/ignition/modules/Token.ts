@@ -4,9 +4,13 @@ const TokenModule = buildModule("TokenModule", (m) => {
   const tokenName = "TEST";
   const tokenSymbol = "TCW";
 
-  const lock = m.contract("Token", [tokenName, tokenSymbol]);
+  const token = m.contract("Token", [tokenName, tokenSymbol]);
 
-  return { lock };
+  // Upgradeable Token
+  const upgradeableToken = m.contract("UpgradeableToken");
+  const upgradeableTokenV2 = m.contract("UpgradeableTokenV2");
+
+  return { token, upgradeableToken, upgradeableTokenV2 };
 });
 
 export default TokenModule;
