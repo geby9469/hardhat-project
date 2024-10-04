@@ -1,8 +1,9 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
+import * as EntryPointContract from "../deployments/chain-31337/deployed_addresses.json";
 
 const AccountContractModule = buildModule("AccountContractModule", (m) => {
     // Before deploying, you can deploy entrypoint contract first.
-    const entryPoint = "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707";
+    const entryPoint = EntryPointContract["EntryPointModule#EntryPoint"];
   
     const accountContract = m.contract("AccountContract", [entryPoint]);
   
