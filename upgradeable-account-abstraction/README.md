@@ -1,23 +1,16 @@
-# Sample Hardhat Project
+# Hardhat And Typescript Project
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+## Directories
 
-Try running some of the following tasks:
+### contracts
 
-```shell
-npx hardhat help
-REPORT_GAS=true npx hardhat test
-```
-
-## Deployment
-
-```shell
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Token.ts
-```
-
-## Test
-
-```shell
-npx hardhat test
-```
+- UpgradeableContract
+  - [openzeppelin-upgradeability-unstructured-storage](https://github.com/OpenZeppelin/openzeppelin-labs/tree/master/upgradeability_using_unstructured_storage): updated the code to solidity compiler 0.8.24 and simply can test upgrade.
+    - OwnedUpgradeabilityProxy: an upgradeability proxy with basic authorization control functionalities
+    - UpgradeabilityProxy: a proxy where the implementation address to which it will delegate can be upgraded
+    - Proxy: gives the possibility to delegate any call to a foreign implementation.
+  - Universal Upgradeable Proxy Standard (UUPS): WIP 🚧
+- ERC4337
+  - [AccountContract](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol)
+- ERC20
+  - [Token](https://docs.openzeppelin.com/contracts/5.x/erc20)

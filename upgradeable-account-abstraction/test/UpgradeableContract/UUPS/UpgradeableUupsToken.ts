@@ -2,8 +2,8 @@ import { loadFixture } from '@nomicfoundation/hardhat-network-helpers';
 import { expect } from 'chai';
 import hre, { ethers, upgrades } from 'hardhat';
 
-describe("UpgradeableContract", function () {
-    async function deployUpgradeableContractFixture() {
+describe("UUPS", function () {
+    async function deployUUPSFixture() {
       const [eoa, eoa2] = await hre.ethers.getSigners();
 
       // Deploy with Proxy
@@ -20,7 +20,7 @@ describe("UpgradeableContract", function () {
 
     describe("Token V1", function () {
       it("Transfer token from EOA to EOA2", async function () {
-        const { eoa, eoa2, tokenProxy } = await loadFixture(deployUpgradeableContractFixture);
+        const { eoa, eoa2, tokenProxy } = await loadFixture(deployUUPSFixture);
 
         await tokenProxy.transfer(eoa2, 1);
 
@@ -30,7 +30,7 @@ describe("UpgradeableContract", function () {
 
     describe("Token V2", function () {
       it("Transfer token from EOA to EOA2", async function () {
-        const { eoa, eoa2, tokenProxyV2 } = await loadFixture(deployUpgradeableContractFixture);
+        const { eoa, eoa2, tokenProxyV2 } = await loadFixture(deployUUPSFixture);
 
         await tokenProxyV2.transfer(eoa2, 1);
 
@@ -38,7 +38,7 @@ describe("UpgradeableContract", function () {
       });
 
       it("Check state variables in the Storage of V2", async function () {
-        const { eoa, eoa2, tokenProxy, tokenProxyV2 } = await loadFixture(deployUpgradeableContractFixture);
+        const { eoa, eoa2, tokenProxy, tokenProxyV2 } = await loadFixture(deployUUPSFixture);
 
         // Control the state variables through V1
         await tokenProxy.transfer(eoa2, 1);
@@ -53,7 +53,7 @@ describe("UpgradeableContract", function () {
       });
 
       it("Check function version from only V2", async function () {
-        const { tokenProxyV2 } = await loadFixture(deployUpgradeableContractFixture);
+        const { tokenProxyV2 } = await loadFixture(deployUUPSFixture);
 
         await tokenProxyV2.setVersion();
         expect(await tokenProxyV2.version()).to.be.equal(1);
